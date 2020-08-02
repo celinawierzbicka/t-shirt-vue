@@ -2,7 +2,39 @@
   <v-layout
     column
   >
+    <h1>Summary of your order:</h1>
+    <div class="text-left my-4">
+      <v-dialog
+        v-model="dialog"
+        width="300"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="primary"
+            v-bind="attrs"
+            v-on="on"
+          >
+            Preview t-shirt
+          </v-btn>
+        </template>
 
+        <v-card>
+          <t-shirt-preview class="mt-4" :url="print.url" :side="print.side" />
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              @click="dialog = false"
+            >
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
     <v-card
         max-width="600"
         tile
@@ -78,11 +110,15 @@
             </v-list-item-content>
         </v-list-item>
     </v-card>
-
-    <t-shirt-preview class="mt-4" :url="print.url" :side="print.side" />
-
-    <v-btn class="mt-4" color="primary" @click="$router.push('/thank-you')">Submit order</v-btn>
-
+    
+    <v-btn-toggle class="mt-2" background-color="#121212">
+      <div class="mr-1">
+        <v-btn @click="$router.push('/form')" color="primary">Back</v-btn>
+      </div>
+      <div class="mx-1">
+        <v-btn color="primary" @click="$router.push('/thank-you')">Submit order</v-btn>
+      </div>
+    </v-btn-toggle>
 
   </v-layout>
 </template>
@@ -97,5 +133,10 @@ export default {
   computed: {
     ...mapState('order', ['details', 'print'])
   },
+  data () {
+      return {
+        dialog: false,
+      }
+  }
 }
 </script>

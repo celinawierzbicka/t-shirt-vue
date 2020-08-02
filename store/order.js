@@ -3,7 +3,9 @@ import Vue from 'vue';
 export const state = () => ({
     print: {
         side: 'front',
-        url: ''
+        url: '',
+        previousUrl: '',
+        nextUrl: ''
     },
     details: {
         name: '',
@@ -31,13 +33,29 @@ export const actions = {
     flipPrintSide({ commit }) {
         commit('setPrintSide');
     },
-
+    goToPreviousPrint({ commit }) {
+        commit('setPreviousPrint');
+    },
+    goToNextPrint({ commit }) {
+        commit('setNextPrint');
+    },
+    goToNewOrder({ commit }) {
+        commit('startNewOrder');
+    },
 }
-
 
 export const mutations = {
     setPrintUrl(state, url) {
+        state.print.previousUrl = state.print.url;
+        state.print.nextUrl = "";
         state.print.url = url;
+    },
+    setPreviousPrint(state, url) {
+        state.print.nextUrl = state.print.url;
+        state.print.url =  state.print.previousUrl;
+    },
+    setNextPrint(state, url) {
+        state.print.url =  state.print.nextUrl;
     },
     setPrintSide(state) {
         state.print.side = state.print.side === 'front' ? 'back' : 'front';
@@ -45,11 +63,9 @@ export const mutations = {
     setAddress(state, { key , value }) {
         state.details[key] = value;
     },
-
     saveToLocalStorage(state) {  
         localStorage.setItem('order', JSON.stringify(state))
     },
-
     loadFromLocalStorage(state) {  
         const saved = localStorage.getItem('order');
         if(saved) {
@@ -58,7 +74,4 @@ export const mutations = {
             Vue.set(state, 'details', parsed.details)       
         }
     },
-
-
-
 }

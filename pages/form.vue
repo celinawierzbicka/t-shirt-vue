@@ -2,7 +2,7 @@
   <v-layout
     column
   >
-
+  <h1>Fill in the form with order details</h1>
   <v-form ref="form" :lazy-validation="true">  
     <v-text-field
         :value="details.name"
@@ -72,10 +72,16 @@
         required
     ></v-text-field>
 
-    <v-btn class="mt-4" color="primary" @click="submit">Submit</v-btn>
+    <v-btn-toggle class="mt-2" background-color="none">
+      <div class="mx-1">
+        <v-btn @click="$router.push('/generator')" small color="primary">Back</v-btn>
+      </div>
+      <div class="mx-1">
+        <v-btn color="primary" small @click="submit">Submit</v-btn>
+      </div>
+    </v-btn-toggle>
 
   </v-form>
-
 
   </v-layout>
 </template>
